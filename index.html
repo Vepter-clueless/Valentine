@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro tebe ❤️</title>
+    <style>
+        /* CSS - Stylování stránky */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffc0cb; /* Růžové pozadí */
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            overflow: hidden; /* Aby tlačítko neuteklo mimo obrazovku a neudělalo posuvníky */
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #ff4d6d;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        img {
+            width: 200px;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            position: relative; /* Důležité pro pozicování */
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin: 0 10px;
+        }
+
+        #yesBtn {
+            background-color: #2ecc71; /* Zelená */
+            color: white;
+            font-weight: bold;
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.1); /* Zvětšení při najetí */
+            background-color: #27ae60;
+        }
+
+        #noBtn {
+            background-color: #e74c3c; /* Červená */
+            color: white;
+            font-weight: bold;
+            position: absolute; /* Abychom s ním mohli hýbat */
+        }
+
+        /* Třída pro skrytí prvků po kliknutí na Ano */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img id="gifImage" src="https://media.tenor.com/fTTVgygNC_gAAAAi/bears-hugging.gif" alt="Cute Bears">
+        
+        <h1 id="question">Budeš mým Valentýnem?</h1>
+        
+        <div class="buttons">
+            <button id="yesBtn">Ano</button>
+            <button id="noBtn">Ne</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript - Logika stránky
+
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const question = document.getElementById('question');
+        const gifImage = document.getElementById('gifImage');
+
+        // Funkce pro pohyb tlačítka "Ne"
+        function moveButton() {
+            // Získáme rozměry okna prohlížeče
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+
+            // Náhodná pozice (aby tlačítko zůstalo uvnitř okna)
+            // Odebíráme velikost tlačítka, aby neuteklo za okraj
+            const randomX = Math.random() * (windowWidth - 150); 
+            const randomY = Math.random() * (windowHeight - 100);
+
+            // Nastavíme tlačítku novou pozici "fixed", aby se hýbalo po celém okně
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        // Když najedeš myší na "Ne"
+        noBtn.addEventListener('mouseover', moveButton);
+        
+        // Pro mobily - když klikneš na "Ne" (protože tam není myš/hover)
+        noBtn.addEventListener('click', moveButton);
+
+        // Když klikneš na "Ano"
+        yesBtn.addEventListener('click', () => {
+            // Změna textu
+            question.innerHTML = "Jupí! Věděl jsem to! ❤️";
+            
+            // Změna obrázku na oslavný (můžeš vyměnit odkaz)
+            gifImage.src = "https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif";
+
+            // Skrytí tlačítek
+            yesBtn.style.display = 'none';
+            noBtn.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
