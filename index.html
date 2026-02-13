@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pro tebe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         /* CSS - Stylování stránky */
         body {
@@ -11,19 +12,18 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #ffc0cb; /* Růžové pozadí */
-            font-family: 'Arial', sans-serif;
+            background-color: #ffc0cb;
+            font-family: 'Nunito', sans-serif;
             margin: 0;
-            overflow: hidden; /* Aby tlačítko neuteklo mimo obrazovku a neudělalo posuvníky */
+            overflow: hidden;
         }
 
-        /* Styl pro padající srdce */
         .heart {
             position: fixed;
             top: -10vh;
-            z-index: 1; /* Srdce budou za hlavním panelem */
+            z-index: 1;
             animation: fall linear forwards;
-            pointer-events: none; /* Kliknutí projde skrz srdce */
+            pointer-events: none;
         }
 
         @keyframes fall {
@@ -34,70 +34,79 @@
 
         .container {
             text-align: center;
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.2);
             position: relative;
-            z-index: 10; /* Zajišťuje, že panel je nad srdíčky */
+            z-index: 10;
+            max-width: 400px;
+            width: 90%;
+            transition: all 0.3s ease;
         }
 
         h1 {
             color: #ff4d6d;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            font-weight: 900;
         }
 
         img {
             width: 200px;
-            height: auto;
-            border-radius: 10px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
             margin-bottom: 20px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
         }
 
         .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
             margin-top: 20px;
-            position: relative; /* Důležité pro pozicování */
+            min-height: 60px;
         }
 
         button {
-            padding: 15px 30px;
+            padding: 12px 28px;
             font-size: 1.2rem;
+            font-family: 'Nunito', sans-serif;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: transform 0.2s;
-            margin: 0 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         #yesBtn {
-            background-color: #2ecc71; /* Zelená */
+            background-color: #2ecc71;
             color: white;
             font-weight: bold;
         }
 
         #yesBtn:hover {
-            transform: scale(1.1); /* Zvětšení při najetí */
+            transform: scale(1.05);
             background-color: #27ae60;
+            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
         }
 
         #noBtn {
-            background-color: #e74c3c; /* Červená */
+            background-color: #ff4d6d;
             color: white;
             font-weight: bold;
-            position: absolute; /* Abychom s ním mohli hýbat */
         }
 
-        /* Třída pro skrytí prvků po kliknutí na Ano */
         .hidden {
-            display: none;
+            display: none !important;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        
         <img id="gifImage" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExYW0zamdqMnBhbTY0NnJ5Nnk3NTgzaG9hMHo4dG1meGxsbXp2dW12cCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4rf2N66Hjoh8Cve2mT/giphy.gif" alt="Cute Bears">
         <h1 id="question">Budeš moje Valentýnka?</h1>
         
@@ -108,73 +117,87 @@
     </div>
 
     <script>
-        // JavaScript - Logika stránky
-
         const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
         const question = document.getElementById('question');
         const gifImage = document.getElementById('gifImage');
 
-        // --- Efekt deště ---
+        // --- Efekt padajících srdcí ---
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
             heart.innerText = '❤️';
-            
-            // Náhodná pozice na šířku
             heart.style.left = Math.random() * 100 + 'vw';
-            
-            // Náhodná délka trvání pádu (mezi 3 a 6 sekundami)
             heart.style.animationDuration = Math.random() * 3 + 3 + 's';
-            
-            // Náhodná velikost (mezi 15px a 35px)
             heart.style.fontSize = Math.random() * 20 + 15 + 'px';
-            
             document.body.appendChild(heart);
-            
-            // Odstranění srdce po dokončení animace, aby se neplnila paměť
             setTimeout(() => {
                 heart.remove();
             }, 6000);
         }
-
-        // Vytvoření nového srdce každých 300 milisekund
         setInterval(createHeart, 300);
-        // -------------------
 
-        // Funkce pro pohyb tlačítka "Ne"
+        // --- Logika tlačítek ---
+        const noTexts = [
+            "Opravdu?", 
+            "Jsi si jistá?", 
+            "Děláš si legraci?", 
+            "Zkus to znovu!"
+        ];
+        
+        let noClickCount = 0;
+        let yesBtnSize = 1;
+
+        // Funkce pro prvotní klikání
+        function handleNoClick() {
+            if (noClickCount < 4) {
+                // Změna textu a počítadla
+                noBtn.innerText = noTexts[noClickCount];
+                noClickCount++;
+
+                // Zvětšení tlačítka Ano
+                yesBtnSize += 0.3;
+                yesBtn.style.transform = `scale(${yesBtnSize})`;
+
+                // Pokud jsme právě dosáhli 4. kliknutí, změníme chování
+                if (noClickCount === 4) {
+                    // Přidáme reakci na najetí myší pro útěk
+                    noBtn.addEventListener('mouseenter', moveButton);
+                    
+                    // Odstraníme funkci měnící text na kliknutí
+                    noBtn.removeEventListener('click', handleNoClick);
+                    
+                    // Přidáme funkci pro útěk i na kliknutí (pojistka pro mobily)
+                    noBtn.addEventListener('click', moveButton);
+                }
+            }
+        }
+
+        // Funkce pro skákání tlačítka
         function moveButton() {
-            // Získáme rozměry okna prohlížeče
+            noBtn.style.position = 'fixed';
+            
             const windowWidth = window.innerWidth;
             const windowHeight = window.innerHeight;
+            const btnWidth = noBtn.offsetWidth;
+            const btnHeight = noBtn.offsetHeight;
 
-            // Náhodná pozice (aby tlačítko zůstalo uvnitř okna)
-            const randomX = Math.random() * (windowWidth - 150); 
-            const randomY = Math.random() * (windowHeight - 100);
+            const randomX = Math.random() * (windowWidth - btnWidth); 
+            const randomY = Math.random() * (windowHeight - btnHeight);
 
-            // Nastavíme tlačítku novou pozici "fixed", aby se hýbalo po celém okně
-            noBtn.style.position = 'fixed';
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
         }
 
-        // Když najedeš myší na "Ne"
-        noBtn.addEventListener('mouseover', moveButton);
-        
-        // Pro mobily - když klikneš na "Ne"
-        noBtn.addEventListener('click', moveButton);
+        // Na začátku tlačítko "Ne" reaguje pouze na kliknutí
+        noBtn.addEventListener('click', handleNoClick);
 
-        // Když klikneš na "Ano"
+        // Akce pro tlačítko "Ano"
         yesBtn.addEventListener('click', () => {
-            // Změna textu
+            yesBtn.style.transform = "scale(1)";
             question.innerHTML = "Jupí! Věděl jsem to!";
-            
-            // Změna obrázku na oslavný
             gifImage.src = "https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif";
-
-            // Skrytí tlačítek
-            yesBtn.style.display = 'none';
-            noBtn.style.display = 'none';
+            document.querySelector('.buttons').classList.add('hidden');
         });
     </script>
 </body>
