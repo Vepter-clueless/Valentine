@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro tebe ❤️</title>
+    <title>Pro tebe</title>
     <style>
         /* CSS - Stylování stránky */
         body {
@@ -17,12 +17,29 @@
             overflow: hidden; /* Aby tlačítko neuteklo mimo obrazovku a neudělalo posuvníky */
         }
 
+        /* Styl pro padající srdce */
+        .heart {
+            position: fixed;
+            top: -10vh;
+            z-index: 1; /* Srdce budou za hlavním panelem */
+            animation: fall linear forwards;
+            pointer-events: none; /* Kliknutí projde skrz srdce */
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh);
+            }
+        }
+
         .container {
             text-align: center;
             background: white;
             padding: 40px;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10; /* Zajišťuje, že panel je nad srdíčky */
         }
 
         h1 {
@@ -80,8 +97,8 @@
 <body>
 
     <div class="container">
-        <img id="gifImage" src="https://tenor.com/cs/view/bubu-dudu-sseeyall-gif-16264043937215175320" alt="Cute Bears">
         
+        <img id="gifImage" src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExYW0zamdqMnBhbTY0NnJ5Nnk3NTgzaG9hMHo4dG1meGxsbXp2dW12cCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4rf2N66Hjoh8Cve2mT/giphy.gif" alt="Cute Bears">
         <h1 id="question">Budeš moje Valentýnka?</h1>
         
         <div class="buttons">
@@ -98,6 +115,33 @@
         const question = document.getElementById('question');
         const gifImage = document.getElementById('gifImage');
 
+        // --- Efekt deště ---
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerText = '❤️';
+            
+            // Náhodná pozice na šířku
+            heart.style.left = Math.random() * 100 + 'vw';
+            
+            // Náhodná délka trvání pádu (mezi 3 a 6 sekundami)
+            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+            
+            // Náhodná velikost (mezi 15px a 35px)
+            heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+            
+            document.body.appendChild(heart);
+            
+            // Odstranění srdce po dokončení animace, aby se neplnila paměť
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        // Vytvoření nového srdce každých 300 milisekund
+        setInterval(createHeart, 300);
+        // -------------------
+
         // Funkce pro pohyb tlačítka "Ne"
         function moveButton() {
             // Získáme rozměry okna prohlížeče
@@ -105,7 +149,6 @@
             const windowHeight = window.innerHeight;
 
             // Náhodná pozice (aby tlačítko zůstalo uvnitř okna)
-            // Odebíráme velikost tlačítka, aby neuteklo za okraj
             const randomX = Math.random() * (windowWidth - 150); 
             const randomY = Math.random() * (windowHeight - 100);
 
@@ -118,15 +161,15 @@
         // Když najedeš myší na "Ne"
         noBtn.addEventListener('mouseover', moveButton);
         
-        // Pro mobily - když klikneš na "Ne" (protože tam není myš/hover)
+        // Pro mobily - když klikneš na "Ne"
         noBtn.addEventListener('click', moveButton);
 
         // Když klikneš na "Ano"
         yesBtn.addEventListener('click', () => {
             // Změna textu
-            question.innerHTML = "Jupí! Věděl jsem to! 😘❤️";
+            question.innerHTML = "Jupí! Věděl jsem to!";
             
-            // Změna obrázku na oslavný (můžeš vyměnit odkaz)
+            // Změna obrázku na oslavný
             gifImage.src = "https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif";
 
             // Skrytí tlačítek
